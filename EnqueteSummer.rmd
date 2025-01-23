@@ -1,0 +1,257 @@
+---
+title: "Analyse de l'enquête SUMMER"
+author : "Naomi BROUILLARD"
+output: pdf_document
+date: "2024-12-29"
+---
+
+
+
+
+# Résumé
+
+Dans la fonction publique de l’État, qui compte 2 070 300 salariés, les contraintes organisationnelles prédominent.  
+Environ 80 % des agents sont en contact direct avec le public, et 63,6 % rapportent des échanges parfois conflictuels.  
+Par ailleurs, plus de la moitié des salariés subissent des contraintes physiques, notamment des postures contraignantes et des déplacements fréquents.  
+Sur le plan psychosocial, 61,1 % évoquent un manque de reconnaissance, et moins d'un quart se trouvent en situation de "job strain", caractérisée par une forte pression psychologique associée à une faible autonomie.
+
+La fonction publique territoriale qui regroupe 1 981 200 salariés, se caractérise par des contraintes physiques très prononcées.  
+Près de 80,6 % des agents sont exposés à des postures contraignantes, et 51,9 % se déplacent régulièrement à pied. De plus, 38,2 % manipulent des charges lourdes.  
+Les nuisances sonores concernent 43,1 % des salariés, et les nuisances thermiques 30,2 %. Côté exposition chimique, 38,5 % des agents sont touchés, notamment par des substances telles que l’ammoniac, les carburants ou les solvants.  
+Sur le plan psychosocial, quasiment la moitié ressentent un manque de reconnaissance, et presque un quart se trouvent en situation de "job strain".
+
+Dans la fonction publique hospitalière qui emploie 1 189 300 personnes, les risques biologiques dominent. Touchant 43 % des salariés.  
+Ces risques sont particulièrement présents dans les soins d’hygiène ou lors de la manipulation de déchets.  
+Les contraintes physiques restent également importantes, la moitié travaillent debout, et 39 % signalent des postures inconfortables affectant le dos.  
+Parmi les employés, majoritairement des femmes, 33,7 % occupent des postes administratifs ou liés aux services.  
+Enfin, 17,4 % des salariés subissent des comportements hostiles, et 23,4 % se trouvent en situation de "job strain".
+
+Le secteur privé bien que distinct fait face à des défis similaires, avec des niveaux élevés d’exposition dans certains domaines spécifiques.  
+Toutefois, il est globalement moins affecté par les risques biologiques que la fonction publique hospitalière.
+
+De manière générale, les femmes sont souvent plus représentées dans les fonctions administratives et de service.  
+Exposées à des risques biologiques et psychosociaux, tandis que les hommes sont davantage confrontés à des tâches physiques exigeantes, comme la manipulation de charges lourdes ou les déplacements à pied.  
+Ces écarts soulignent la nécessité d’actions de prévention adaptées aux spécificités de chaque genre.
+
+
+
+# Tables des données
+
+## Les profils
+
+Cette table représente les pourcentages d'hommes et de femmes pour chaque catégorie socioprofessionnelle dans les différents secteur
+
+```{R}
+ProfilCateg <- data.frame(
+  Secteur = c('Public', 'Public', 'Public', 'Public', 'Public', 'Public',
+              'Territoriale', 'Territoriale', 'Territoriale', 'Territoriale', 'Territoriale', 'Territoriale',
+              'Hospitalière', 'Hospitalière', 'Hospitalière', 'Hospitalière', 'Hospitalière', 'Hospitalière',
+              'Privé', 'Privé', 'Privé', 'Privé', 'Privé', 'Privé'),
+  Categorie_socioprofessionnelle = c('Cadres et prof. intellect. sup.', 'Professions intermédiaires',
+                                     'Employés administratifs', 'Employés de commerce et de service',
+                                     'Ouvriers qualifiés', 'Ouvriers non qualifiés/agricoles',
+                                     'Cadres et prof. intellect. sup.', 'Professions intermédiaires',
+                                     'Employés administratifs', 'Employés de commerce et de service',
+                                     'Ouvriers qualifiés', 'Ouvriers non qualifiés/agricoles',
+                                     'Cadres et prof. intellect. sup.', 'Professions intermédiaires',
+                                     'Employés administratifs', 'Employés de commerce et de service',
+                                     'Ouvriers qualifiés', 'Ouvriers non qualifiés/agricoles',
+                                     'Cadres et prof. intellect. sup.', 'Professions intermédiaires',
+                                     'Employés administratifs', 'Employés de commerce et de service',
+                                     'Ouvriers qualifiés', 'Ouvriers non qualifiés/agricoles'),
+  Hommes = c(14.7, 13.8, 3.1, 14.0, 2.0, 0.3, 2.1, 3.0, 1.7, 3.8, 19.3, 9.2,
+             5.9, 6.1, 0.5, 5.3, 3.6, 0.8, 10.5, 9.9, 2.8, 6.5, 17.7, 6.4),
+  Femmes = c(16.8, 22.9, 8.4, 3.8, 0.2, 0.1, 5.9, 12.0, 16.3, 21.4, 3.5, 2.0,
+             7.1, 31.9, 6.8, 28.3, 2.8, 0.8, 6.0, 8.1, 10.9, 15.5, 2.2, 3.6)
+)
+```
+
+
+Cette table représente les pourcentages d'hommes et de femmes pour chaque tranche d'âge dans les différents secteur
+
+```{R}
+ProfilAge <- data.frame(
+  Secteur = c('Public', 'Public', 'Public', 'Public', 'Public', 'Public',
+              'Territoriale', 'Territoriale', 'Territoriale', 'Territoriale', 'Territoriale', 'Territoriale',
+              'Hospitalière', 'Hospitalière', 'Hospitalière', 'Hospitalière', 'Hospitalière', 'Hospitalière',
+              'Privé', 'Privé', 'Privé', 'Privé', 'Privé', 'Privé'),
+  Tranche_age = c('Moins de 25 ans', '25 à 29 ans', '30 à 39 ans', '40 à 49 ans', '50 à 59 ans', '60 ans et plus',
+                  'Moins de 25 ans', '25 à 29 ans', '30 à 39 ans', '40 à 49 ans', '50 à 59 ans', '60 ans et plus',
+                  'Moins de 25 ans', '25 à 29 ans', '30 à 39 ans', '40 à 49 ans', '50 à 59 ans', '60 ans et plus',
+                  'Moins de 25 ans', '25 à 29 ans', '30 à 39 ans', '40 à 49 ans', '50 à 59 ans', '60 ans et plus'),
+  Hommes = c(2.0, 4.6, 10.2, 16.3, 12.4, 2.3, 1.1, 4.8, 6.0, 11.2, 12.3, 3.6,
+             0.6, 1.4, 5.1, 5.4, 7.5, 2.3, 4.6, 6.1, 13.9, 13.6, 12.4, 3.0),
+  Femmes = c(0.9, 4.3, 12.6, 18.4, 13.3, 2.6, 3.2, 3.1, 11.1, 20.3, 18.0, 5.2,
+             4.5, 8.5, 20.9, 19.0, 20.2, 4.7, 3.3, 4.8, 10.9, 12.3, 12.1, 2.9)
+)
+```
+
+
+
+## Les expositions aux risques
+
+Cette table représente les pourcentages d'exposition à certains risques énoncés dans l'enquête
+
+```{R}
+dataExpo <- data.frame(
+  Effectif = c(2070300, 1981200, 1189300, 19547200),
+  Contraintes_physiques_per = c(55.8, 80.6, 82.7, 71.6),
+  Nuisances_sonores_per = c(41.5, 43.1, 27.0, 31.4),
+  Exposition_agents_chimiques_per = c(14.6, 38.5, 57.0, 32.1),
+  Manque_reconnaissance_per = c(61.1, 47.6, 57.7, 49.3),
+  Job_Strain_per = c(22.2, 23.4, 35.3, 27.2),
+  Comportements_hostiles_per = c(17.6, 17.4, 18.5, 15.5),
+  Contact_direct_avec_public_per = c(79.8, 84.5, 88.5, 71.5),
+  Travail_debout_per = c(41.6, 53.0, 65.8, 48.0)
+)
+rownames(dataExpo) <- c("Public", "Territoriale", "Hospitalière", "Privé")
+```
+
+
+
+# Les statistiques
+
+Le pourcentage d'hommes et de femmes dans les différents secteurs
+
+```{R}
+print(aggregate(cbind(Hommes, Femmes) ~ Secteur, data = ProfilCateg, sum))
+```
+
+
+Le pourcentage d'hommes et de femmes pour chaque tranche d'âge
+
+```{R}
+ProfilAgeTotal <- aggregate(cbind(Hommes, Femmes) ~ Tranche_age, data = ProfilAge, sum)
+totalsAge <- rowSums(ProfilAgeTotal[, c("Hommes", "Femmes")])
+ProfilAgeTotal$Hommes <- round(ProfilAgeTotal$Hommes / totalsAge * 100, 1)
+ProfilAgeTotal$Femmes <- round(ProfilAgeTotal$Femmes / totalsAge * 100, 1)
+print(ProfilAgeTotal)
+```
+
+
+Le pourcentage d'hommes et de femmes pour chaque categorie socioprofessionnelle
+
+```{R}
+ProfilTotalCat <- aggregate(cbind(Hommes, Femmes) ~ Categorie_socioprofessionnelle, data = ProfilCateg, sum)
+totalsCat <- rowSums(ProfilTotalCat[, c("Hommes", "Femmes")])
+ProfilTotalCat$Hommes <- round(ProfilTotalCat$Hommes / totalsCat * 100, 1)
+ProfilTotalCat$Femmes <- round(ProfilTotalCat$Femmes / totalsCat * 100, 1)
+print(ProfilTotalCat)
+```
+
+
+Le ratio de femmes par rapport aux hommes par secteur
+
+```{R}
+ProfilTotalSect <- aggregate(cbind(Hommes, Femmes) ~ Secteur, data = ProfilCateg, sum)
+ProfilTotalSect$Ratio_Femmes_Hommes <- ProfilTotalSect$Femmes / ProfilTotalSect$Hommes
+print(ProfilTotalSect)
+```
+
+
+Le ratio de femmes par rapport aux hommes par tranche d'âge
+
+```{R}
+ProfilAgeTotal$Ratio_Femmes_Hommes <- ProfilAgeTotal$Femmes / ProfilAgeTotal$Hommes
+print(ProfilAgeTotal)
+```
+
+
+Le ratio de femmes par rapport aux hommes qui subissent des contraintes physiques
+
+```{R}
+dataExpo$Ratio_Femmes_Hommes <- (
+    ProfilTotalSect$Femmes * dataExpo$Contraintes_physiques_per / 100
+) / (
+    ProfilTotalSect$Hommes * dataExpo$Contraintes_physiques_per / 100
+)
+print(dataExpo[, c("Contraintes_physiques_per", "Ratio_Femmes_Hommes")])
+```
+
+
+
+# Les graphiques
+
+Pour cela, on aura besoin de la librairie ggplot2 qui nous permettra de faire et de visualiser les graphiques
+
+```{R}
+library(ggplot2)
+```
+
+
+## Diagramme en tuyaux d'orge empilé représentant les hommes et les femmes par secteur
+
+```{R}
+dfSecteur <- aggregate(cbind(Hommes, Femmes) ~ Secteur, data = ProfilCateg, sum)
+dfSecteur <- reshape2::melt(dfSecteur, id.vars = "Secteur", variable.name = "Genre", value.name = "Effectif")
+
+ggplot(dfSecteur, aes(x = Secteur, y = Effectif, fill = Genre)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Répartition hommes/femmes par secteur", x = "Secteur", y = "Effectif") +
+  scale_fill_manual(values = c("blue", "pink")) +
+  theme_minimal()
+```
+
+
+## Diagramme circulaire représentant la répartition d'hommes et de femmes par categorie socioprofessionnelle
+
+```{R}
+ProfilTotalCatMelt <- reshape2::melt(ProfilTotalCat, id.vars = "Categorie_socioprofessionnelle", variable.name = "Genre", value.name = "Effectif")
+
+ggplot(ProfilTotalCatMelt, aes(x = "", y = Effectif, fill = Genre)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  facet_wrap(~ Categorie_socioprofessionnelle) +
+  labs(title = "Répartition hommes/femmes par catégorie socioprofessionnelle", x = NULL, y = NULL) +
+  theme_void()
+```
+
+
+## Carte de chaleur représentant la ratio de femmes comparer aux hommes parmi les différents secteurs et les tranche d'âge
+
+```{R}
+ProfilAgeTotal <- aggregate(cbind(Hommes, Femmes) ~ Secteur + Tranche_age, data = ProfilAge, sum)
+ProfilAgeTotal$Ratio_Femmes_Hommes <- ProfilAgeTotal$Femmes / ProfilAgeTotal$Hommes
+
+ProfilAgeTotal$Tranche_age <- factor(ProfilAgeTotal$Tranche_age, 
+                                     levels = c("Moins de 25 ans", "25 à 29 ans", "30 à 39 ans", 
+                                                "40 à 49 ans", "50 à 59 ans", "60 ans et plus"))
+
+print(ProfilAgeTotal)
+
+ggplot(ProfilAgeTotal, aes(x = Tranche_age, y = Secteur, fill = Ratio_Femmes_Hommes)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "lightblue", high = "darkblue", name = "Ratio F/H") +
+  labs(title = "Ratios femmes/hommes par secteur selon les tranche d'âge", x = "Tranche d'âge", y = "Secteur") +
+  theme_minimal()
+```
+
+
+## Graphique linéaire des évolution à travers les tranches d'âge du ratio de femmes par rapport aux hommes dans le secteur public
+
+```{R}
+dfLine <- ProfilAgeTotal[ProfilAgeTotal$Secteur == "Public", ]
+
+ggplot(dfLine, aes(x = Tranche_age, y = Ratio_Femmes_Hommes, group = 1)) +
+  geom_line(color = "blue", size = 1) +
+  geom_point(color = "darkblue", size = 2) +
+  labs(title = "Évolution du ratio femmes/hommes dans le secteur Public", 
+       x = "Tranche d'âge", 
+       y = "Ratio F/H") +
+  theme_minimal()
+```
+
+
+## Diagramme en tuyaux d'orge groupé des expositions à certains risques par secteur
+
+```{R}
+dfExpositions <- reshape2::melt(dataExpo[, c("Contraintes_physiques_per", "Nuisances_sonores_per", "Manque_reconnaissance_per", "Job_Strain_per")], 
+                                variable.name = "Exposition", value.name = "Pourcentage")
+dfExpositions$Secteur <- rownames(dataExpo)
+
+ggplot(dfExpositions, aes(x = Secteur, y = Pourcentage, fill = Exposition)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparaison des expositions par secteur", x = "Secteur", y = "Pourcentage") +
+  scale_fill_brewer(palette = "Set3") +
+  theme_minimal()
+```
